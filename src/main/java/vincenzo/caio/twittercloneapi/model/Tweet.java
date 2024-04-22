@@ -1,8 +1,6 @@
 package vincenzo.caio.twittercloneapi.model;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NonNull;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -10,10 +8,11 @@ import java.time.LocalDateTime;
 @Builder
 public class Tweet {
 
-    public static String DB_NAME = "user";
+    public static String DB_NAME = "tweet";
 
+    private String id;
     private String payload;
-    private LocalDateTime timestamp;
-    @NonNull
-    private User user;
+    private String timestamp;
+//    @NonNull
+    private String user;
 }

@@ -1,10 +1,9 @@
 package vincenzo.caio.twittercloneapi.controller;
 
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vincenzo.caio.twittercloneapi.dto.UserDto;
 import vincenzo.caio.twittercloneapi.service.UserService;
 import vincenzo.caio.twittercloneapi.model.User;
 
@@ -19,9 +18,9 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createUser(@RequestBody User newUser) {
-        User createdUser = service.createUser(newUser);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+    public ResponseEntity<?> signUp(@RequestBody UserDto userDto) {
+        User newUser = service.createUser(userDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
     }
 
     @GetMapping("/{email}")
