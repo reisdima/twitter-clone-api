@@ -7,7 +7,8 @@ import vincenzo.caio.twittercloneapi.dto.TweetDto;
 import vincenzo.caio.twittercloneapi.model.Tweet;
 import vincenzo.caio.twittercloneapi.service.TweetService;
 
-import java.time.LocalDateTime;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/tweet")
@@ -23,6 +24,12 @@ public class TweetController {
     public ResponseEntity<?> tweet(@RequestBody TweetDto tweet) {
         Tweet newTweet = service.createTweet(tweet);
         return ResponseEntity.status(HttpStatus.CREATED).body(newTweet);
+    }
+
+    @GetMapping("/betweenTime")
+    public ResponseEntity<?> getTweetsBetweenTime(@RequestParam(required = false) String startTime, @RequestParam String endTime) {
+        List<Tweet> tweets = service.getTweetsBeforeTime(endTime);
+        return ResponseEntity.status(HttpStatus.OK).body(tweets);
     }
 
 
