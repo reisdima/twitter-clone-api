@@ -18,7 +18,11 @@ public class UserService {
         this.driver = DBConnection.getDriver();
     }
     public User createUser(User newUser) {
-        return driver.create(User.DB_NAME, newUser);
+        List<QueryResult<User>> query = driver.query("SELECT * FROM user WHERE email=$email", Map.of("email", newUser.getEmail()), User.class);
+        if(query.isEmpty() || query.get(0).getResult().isEmpty()) {
+            return driver.create(User.DB_NAME, newUser);
+        }
+        throw new RuntimeException("The e-mail " + newUser.getEmail() + " is already in use.");
     }
 
     public User getUserByEmail(String email) {
