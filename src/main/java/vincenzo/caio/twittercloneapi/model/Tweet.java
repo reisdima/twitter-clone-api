@@ -2,6 +2,7 @@ package vincenzo.caio.twittercloneapi.model;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.NonNull;
 
 import java.time.ZonedDateTime;
 
@@ -13,4 +14,6 @@ public class Tweet {
 
     private String payload;
     private ZonedDateTime timestamp;
+    @NonNull
+    private User user;
 }
