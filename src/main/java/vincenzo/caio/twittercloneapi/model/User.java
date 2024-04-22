@@ -7,6 +7,8 @@ import lombok.Data;
 @Builder
 public class User {
 
+    public static String DB_NAME = "user";
+
     private String name;
     private String email;
 

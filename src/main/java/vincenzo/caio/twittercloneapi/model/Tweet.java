@@ -9,6 +9,8 @@ import java.time.ZonedDateTime;
 @Builder
 public class Tweet {
 
-    String payload;
-    ZonedDateTime timestamp;
+    public static String DB_NAME = "user";
+
+    private String payload;
+    private ZonedDateTime timestamp;
 }

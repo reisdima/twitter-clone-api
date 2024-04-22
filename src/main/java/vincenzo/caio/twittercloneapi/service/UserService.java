@@ -12,13 +12,13 @@ import java.util.Map;
 @Service
 public class UserService {
 
-    private SyncSurrealDriver driver;
+    private final SyncSurrealDriver driver;
 
     public UserService() {
         this.driver = DBConnection.getDriver();
     }
     public User createUser(User newUser) {
-        return driver.create("user", newUser);
+        return driver.create(User.DB_NAME, newUser);
     }
 
     public User getUserByEmail(String email) {
