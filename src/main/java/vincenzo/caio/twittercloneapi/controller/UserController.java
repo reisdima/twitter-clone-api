@@ -20,8 +20,8 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<?> createUser(@RequestBody User newUser) {
-        service.createUser(newUser);
-        return ResponseEntity.status(HttpStatus.OK).body(newUser);
+        User createdUser = service.createUser(newUser);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
     @GetMapping("/{email}")
