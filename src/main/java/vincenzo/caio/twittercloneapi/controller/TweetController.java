@@ -28,7 +28,7 @@ public class TweetController {
 
     @GetMapping("/betweenTime")
     public ResponseEntity<?> getTweetsBetweenTime(@RequestParam(required = false) String startTime, @RequestParam String endTime) {
-        List<Tweet> tweets = service.getTweetsBeforeTime(endTime);
+        List<Tweet> tweets = service.getTweetsBetweenTime(startTime, endTime);
         return ResponseEntity.status(HttpStatus.OK).body(tweets);
     }
 

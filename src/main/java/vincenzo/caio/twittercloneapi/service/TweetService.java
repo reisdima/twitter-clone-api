@@ -33,7 +33,7 @@ public class TweetService {
         System.out.println(newTweet);
         newTweet.setTimestamp(LocalDateTime.now(ZoneOffset.UTC).toString());
         User user = userService.getUserByEmail(newTweet.getUserEmail());
-        if(user == null) {
+        if (user == null) {
             throw new RuntimeException("User with e-mail " + newTweet.getUser() + " not found");
         }
         Tweet tweet = this.createTweetFromDto(newTweet);
@@ -44,24 +44,29 @@ public class TweetService {
     public List<Tweet> getTweetsBeforeTime(String time) {
         System.out.println("Looking for tweets before " + time);
         List<QueryResult<Tweet>> query = driver.query("SELECT * FROM tweet WHERE timestamp < $time ", Map.of("time", time), Tweet.class);
-        if(query.isEmpty()) {
+        if (query.isEmpty()) {
             return null;
         }
-        if(query.get(0).getResult().isEmpty()) {
+        if (query.get(0).getResult().isEmpty()) {
             return null;
         }
         return query.get(0).getResult();
     }
 
     public List<Tweet> getTweetsBetweenTime(String startTime, String endTime) {
-        List<QueryResult<Tweet>> query = driver.query("SELECT * FROM tweet WHERE time > $startTime AND time < $endTime ", Map.of("time", startTime), Tweet.class);
-        if(query.isEmpty()) {
+        List<QueryResult<Tweet>> query = driver.query("SELECT * FROM tweet WHERE timestamp > $startTime AND timestamp < $endTime ", Map.of("startTime", startTime, "endTime", endTime
+        ), Tweet.class);
+        if (query.isEmpty()) {
             return null;
         }
-        if(query.get(0).getResult().isEmpty()) {
+        if (query.get(0).getResult().isEmpty()) {
             return null;
         }
         return query.get(0).getResult();
+    }
+
+    public List<Tweet> getTweetsBetweenTime(LocalDateTime startTime, LocalDateTime endTime) {
+        return this.getTweetsBetweenTime(startTime.toString(), endTime.toString());
     }
 
 }
