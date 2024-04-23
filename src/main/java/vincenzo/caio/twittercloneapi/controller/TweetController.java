@@ -47,7 +47,7 @@ public class TweetController {
     }
 
 
-    @GetMapping
+    @GetMapping("/user")
     public ResponseEntity<?> getTweetsByUserId(@RequestParam String from) {
         List<Tweet> tweets = service.getTweetsByUserId(from);
         return ResponseEntity.status(HttpStatus.OK).body(tweets);
