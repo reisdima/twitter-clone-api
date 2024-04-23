@@ -3,7 +3,9 @@ package vincenzo.caio.twittercloneapi.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vincenzo.caio.twittercloneapi.dto.CampaignDto;
 import vincenzo.caio.twittercloneapi.dto.UserDto;
+import vincenzo.caio.twittercloneapi.model.Campaign;
 import vincenzo.caio.twittercloneapi.service.UserService;
 import vincenzo.caio.twittercloneapi.model.User;
 
@@ -30,5 +32,11 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with e-mail " + email + " not found");
         }
         return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
+
+    @PutMapping
+    public ResponseEntity<?> updateUser(@RequestBody UserDto user) {
+        User updatedCUser = service.updateUser(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(updatedCUser);
     }
 }

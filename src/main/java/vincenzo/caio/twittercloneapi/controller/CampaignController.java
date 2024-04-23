@@ -41,6 +41,6 @@ public class CampaignController {
     @PutMapping
     public ResponseEntity<?> updateCampaignPhrase(@RequestBody CampaignDto campaign) {
         Campaign updatedCampaign = service.updateCampaignPhrase(campaign);
-        return ResponseEntity.status(HttpStatus.CREATED).body("The campaign was successfully updated. " + updatedCampaign);
+        return ResponseEntity.status(HttpStatus.CREATED).body(updatedCampaign);
     }
 }
