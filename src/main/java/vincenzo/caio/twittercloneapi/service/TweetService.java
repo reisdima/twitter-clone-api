@@ -54,6 +54,7 @@ public class TweetService {
     }
 
     public List<Tweet> getTweetsBetweenTime(String startTime, String endTime) {
+        System.out.println("Procurando tweets entre " + startTime + " e " + endTime );
         List<QueryResult<Tweet>> query = driver.query("SELECT * FROM tweet WHERE timestamp > $startTime AND timestamp < $endTime ", Map.of("startTime", startTime, "endTime", endTime
         ), Tweet.class);
         if (query.isEmpty()) {
@@ -66,7 +67,42 @@ public class TweetService {
     }
 
     public List<Tweet> getTweetsBetweenTime(LocalDateTime startTime, LocalDateTime endTime) {
-        return this.getTweetsBetweenTime(startTime.toString(), endTime.toString());
+        return this.getTweetsBetweenTime(startTime.toString(), endTime == null ? "" : endTime.toString());
+    }
+
+    public List<Tweet> getTweetsAfterTimeByUser(User user, String startTime) {
+        System.out.println("Procurando tweets do usuario " + user.getEmail() + " depois de " + startTime);
+        List<QueryResult<Tweet>> query = driver.query("SELECT * FROM tweet WHERE user = $user AND timestamp > $startTime",
+                Map.of("user", user.getId(), "startTime", startTime), Tweet.class);
+        if (query.isEmpty()) {
+            return null;
+        }
+        if (query.get(0).getResult().isEmpty()) {
+            return null;
+        }
+        return query.get(0).getResult();
+    }
+
+    public List<Tweet> getTweetsAfterTimeByUser(User user, LocalDateTime startTime) {
+        return this.getTweetsAfterTimeByUser(user, startTime.toString());
+    }
+
+    public List<Tweet> getTweetsBetweenTimeByUser(User user, String startTime, String endTime) {
+        System.out.println("Procurando tweets do usuario " + user.getEmail() + " entre " + startTime + " e " + endTime );
+        List<QueryResult<Tweet>> query = driver.query("SELECT * FROM tweet WHERE user = $user AND timestamp > $startTime AND timestamp < $endTime ",
+                Map.of("user", user.getId(), "startTime", startTime, "endTime", endTime
+        ), Tweet.class);
+        if (query.isEmpty()) {
+            return null;
+        }
+        if (query.get(0).getResult().isEmpty()) {
+            return null;
+        }
+        return query.get(0).getResult();
+    }
+
+    public List<Tweet> getTweetsBetweenTimeByUser(User user, LocalDateTime startTime, LocalDateTime endTime) {
+        return this.getTweetsBetweenTimeByUser(user, startTime.toString(), endTime == null ? "null" : endTime.toString());
     }
 
 }

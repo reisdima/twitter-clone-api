@@ -51,7 +51,5 @@ public class UserService {
         return query.get(0).getResult().get(0);
     }
 
-    public int calculatePointsForUser(User user) {
 
-    }
 }

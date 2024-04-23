@@ -31,4 +31,10 @@ public class CampaignController {
         List<Campaign> campaigns = service.getAllCampaigns();
         return ResponseEntity.status(HttpStatus.OK).body(campaigns);
     }
+
+    @GetMapping("/points")
+    public ResponseEntity<?> getPointsByUser(@RequestParam String email) {
+        int points = service.calculatePointsForUser(email);
+        return ResponseEntity.status(HttpStatus.OK).body("User " + email + " has " + points + " points");
+    }
 }
