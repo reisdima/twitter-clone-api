@@ -2,6 +2,7 @@ package vincenzo.caio.twittercloneapi.model;
 
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.time.LocalDateTime;
 

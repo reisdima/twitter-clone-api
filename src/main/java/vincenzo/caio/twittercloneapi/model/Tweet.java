@@ -12,7 +12,7 @@ public class Tweet {
 
     private String id;
     private String payload;
-    private String timestamp;
+    private LocalDateTime timestamp;
 //    @NonNull
     private String user;
 }

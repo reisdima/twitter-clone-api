@@ -8,6 +8,8 @@ import vincenzo.caio.twittercloneapi.model.Tweet;
 import vincenzo.caio.twittercloneapi.service.TweetService;
 
 
+
+import java.time.Instant;
 import java.util.List;
 
 @RestController
@@ -27,8 +29,20 @@ public class TweetController {
     }
 
     @GetMapping("/betweenTime")
-    public ResponseEntity<?> getTweetsBetweenTime(@RequestParam(required = false) String startTime, @RequestParam String endTime) {
+    public ResponseEntity<?> getTweetsBetweenTime(@RequestParam(required = false) Instant startTime, @RequestParam Instant endTime) {
         List<Tweet> tweets = service.getTweetsBetweenTime(startTime, endTime);
+        return ResponseEntity.status(HttpStatus.OK).body(tweets);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getTweetById(@PathVariable String id) {
+        Tweet tweet = service.getTweetById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(tweet);
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getAllTweets(@RequestParam Integer page) {
+        List<Tweet> tweets = service.getAllTweetsByPage(page);
         return ResponseEntity.status(HttpStatus.OK).body(tweets);
     }
 

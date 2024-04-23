@@ -3,6 +3,8 @@ package vincenzo.caio.twittercloneapi.dto;
 import lombok.Data;
 import vincenzo.caio.twittercloneapi.model.User;
 
+import java.time.LocalDateTime;
+
 @Data
 public class TweetDto {
 
@@ -11,5 +13,5 @@ public class TweetDto {
     private String userId;
     private User user;
     private String userEmail;
-    private String timestamp;
+    private LocalDateTime timestamp;
 }
