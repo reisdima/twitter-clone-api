@@ -3,6 +3,8 @@ package vincenzo.caio.twittercloneapi.model;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 public class User {
@@ -13,6 +15,7 @@ public class User {
     private String username;
     private String name;
     private String email;
+    private LocalDateTime createdAt;
     private String password;
 
 }

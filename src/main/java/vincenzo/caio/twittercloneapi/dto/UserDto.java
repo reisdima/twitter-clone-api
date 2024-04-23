@@ -2,6 +2,8 @@ package vincenzo.caio.twittercloneapi.dto;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 public class UserDto {
 
@@ -10,4 +12,5 @@ public class UserDto {
     private String email;
     private String username;
     private String password;
+    private LocalDateTime createdAt;
 }

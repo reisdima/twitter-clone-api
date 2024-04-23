@@ -7,9 +7,10 @@ import vincenzo.caio.twittercloneapi.dto.UserDto;
 import vincenzo.caio.twittercloneapi.utils.DBConnection;
 import vincenzo.caio.twittercloneapi.model.User;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 @Service
 public class UserService {
@@ -24,14 +25,15 @@ public class UserService {
         return User.builder()
                 .email(userDto.getEmail())
                 .name(userDto.getName())
+                .createdAt(userDto.getCreatedAt())
                 .username(userDto.getUsername())
                 .password(userDto.getPassword()).build();
-
     }
 
     public User createUser(UserDto newUser) {
         List<QueryResult<User>> query = driver.query("SELECT email FROM user WHERE email=$email", Map.of("email", newUser.getEmail()), User.class);
         if(query.isEmpty() || query.get(0).getResult().isEmpty()) {
+            newUser.setCreatedAt(LocalDateTime.now(ZoneOffset.UTC));
             return driver.create(User.DB_NAME, createUserFromDto(newUser));
         }
         throw new RuntimeException("The e-mail " + newUser.getEmail() + " is already in use.");
@@ -47,5 +49,9 @@ public class UserService {
             return null;
         }
         return query.get(0).getResult().get(0);
+    }
+
+    public int calculatePointsForUser(User user) {
+
     }
 }
