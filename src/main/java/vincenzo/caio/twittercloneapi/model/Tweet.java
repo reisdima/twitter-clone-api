@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Builder
 public class Tweet {
 
-    public static String DB_NAME = "tweet";
+    public final static String DB_NAME = "tweet";
 
     private String id;
     private String payload;
