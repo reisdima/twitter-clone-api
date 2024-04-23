@@ -4,6 +4,8 @@ import com.surrealdb.driver.SyncSurrealDriver;
 import com.surrealdb.driver.model.QueryResult;
 import org.springframework.stereotype.Service;
 import vincenzo.caio.twittercloneapi.dto.TweetDto;
+import vincenzo.caio.twittercloneapi.exception.EntityNotFoundException;
+import vincenzo.caio.twittercloneapi.exception.InvalidInputFormatException;
 import vincenzo.caio.twittercloneapi.model.Tweet;
 import vincenzo.caio.twittercloneapi.model.User;
 import vincenzo.caio.twittercloneapi.utils.DBConnection;
@@ -36,7 +38,7 @@ public class TweetService {
         newTweet.setTimestamp(LocalDateTime.now(ZoneOffset.UTC));
         User user = userService.getUserByEmail(newTweet.getUserEmail());
         if (user == null) {
-            throw new RuntimeException("User with e-mail " + newTweet.getUser() + " not found");
+            throw new EntityNotFoundException("User", "User with e-mail " + newTweet.getUser() + " not found");
         }
         Tweet tweet = this.createTweetFromDto(newTweet);
         tweet.setUser(user.getId());
@@ -85,16 +87,30 @@ public class TweetService {
 
 
     public List<Tweet> getAllTweetsByPage(Integer page) {
-        page -= 1;
-        String queryStr = "SELECT * FROM tweet LIMIT " + PAGE_SIZE + " START " + (page * PAGE_SIZE);
+        if (page <= 0) {
+            throw new InvalidInputFormatException("Page must be a positve number");
+        }
+        String queryStr = "SELECT * FROM tweet LIMIT " + PAGE_SIZE + " START " + ((page - 1) * PAGE_SIZE);
         List<QueryResult<Tweet>> query = driver.query(queryStr, null, Tweet.class);
+        if (query.isEmpty() || query.get(0).getResult().isEmpty()) {
+            throw new EntityNotFoundException("Tweet", "Could not find any tweet from page " + page);
+        }
+        return query.get(0).getResult();
+    }
+
+    public List<Tweet> getTweetsByUserId(String userId) {
+        List<QueryResult<Tweet>> query = driver.query("SELECT * FROM tweet WHERE user=$userId",
+                Map.of("userId", userId), Tweet.class);
+        if (query.isEmpty() || query.get(0).getResult().isEmpty()) {
+            throw new EntityNotFoundException("Tweet", "Could not find any tweet from user " + userId);
+        }
         return query.get(0).getResult();
     }
 
     public Tweet getTweetById(String id) {
         List<QueryResult<Tweet>> query = driver.query("SELECT * FROM tweet WHERE id=$id", Map.of("id", id), Tweet.class);
         if (query.isEmpty() || query.get(0).getResult().isEmpty()) {
-            throw new RuntimeException("Could not find tweet ith id " + id);
+            throw new EntityNotFoundException("Tweet", "Could not find tweet with id " + id);
         }
         return query.get(0).getResult().get(0);
     }

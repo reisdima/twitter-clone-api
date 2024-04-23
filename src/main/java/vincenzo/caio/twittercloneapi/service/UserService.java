@@ -4,6 +4,8 @@ import com.surrealdb.driver.SyncSurrealDriver;
 import com.surrealdb.driver.model.QueryResult;
 import org.springframework.stereotype.Service;
 import vincenzo.caio.twittercloneapi.dto.UserDto;
+import vincenzo.caio.twittercloneapi.exception.EntityNotFoundException;
+import vincenzo.caio.twittercloneapi.exception.InvalidInputFormatException;
 import vincenzo.caio.twittercloneapi.utils.DBConnection;
 import vincenzo.caio.twittercloneapi.model.User;
 
@@ -36,7 +38,7 @@ public class UserService {
             newUser.setCreatedAt(LocalDateTime.now(ZoneOffset.UTC));
             return driver.create(User.DB_NAME, createUserFromDto(newUser));
         }
-        throw new RuntimeException("The e-mail " + newUser.getEmail() + " is already in use.");
+        throw new InvalidInputFormatException("The e-mail " + newUser.getEmail() + " is already in use.");
     }
 
     public User getUserByEmail(String email) {
