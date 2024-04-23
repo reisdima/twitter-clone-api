@@ -12,6 +12,7 @@ import vincenzo.caio.twittercloneapi.utils.DBConnection;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CampaignService {
@@ -27,13 +28,24 @@ public class CampaignService {
     }
 
     public Campaign createCampaignFromDto(CampaignDto campaignDto) {
-        return Campaign.builder().startTime(campaignDto.getStartTime()).phrase(campaignDto.getPhrase()).build();
+        return Campaign.builder().startTime(campaignDto.getStartTime())
+                .id(campaignDto.getId()).phrase(campaignDto.getPhrase()).build();
     }
 
     public Campaign createCampaign(CampaignDto campaignDto) {
         Campaign campaign = createCampaignFromDto(campaignDto);
         campaign.setStartTime(LocalDateTime.now(ZoneOffset.UTC));
         return driver.create(Campaign.DB_NAME, campaign);
+    }
+
+    public Campaign updateCampaignPhrase(CampaignDto campaignDto) {
+        List<QueryResult<Campaign>> query = driver.query("UPDATE $id SET phrase=$phrase",
+                Map.of("id", campaignDto.getId(), "phrase", campaignDto.getPhrase()), Campaign.class);
+        if(query.isEmpty() || query.get(0).getResult().isEmpty()) {
+            throw new RuntimeException("An error occurred trying to update campaign " + campaignDto.getId());
+        }
+        return query.get(0).getResult().get(0);
+
     }
 
     public List<Campaign> getAllCampaigns() {

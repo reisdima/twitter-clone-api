@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 @Data
 public class CampaignDto {
 
-    String phrase;
-    LocalDateTime startTime;
+    private String id;
+    private String phrase;
+    private LocalDateTime startTime;
 }

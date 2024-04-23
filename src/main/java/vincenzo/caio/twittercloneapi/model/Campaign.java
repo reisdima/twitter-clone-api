@@ -11,7 +11,8 @@ public class Campaign {
 
     public final static String DB_NAME = "campaign";
 
-    String phrase;
-    LocalDateTime startTime;
+    private String id;
+    private String phrase;
+    private LocalDateTime startTime;
 
 }

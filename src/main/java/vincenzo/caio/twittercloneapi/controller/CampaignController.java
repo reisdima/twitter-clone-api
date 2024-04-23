@@ -37,4 +37,10 @@ public class CampaignController {
         int points = service.calculatePointsForUser(email);
         return ResponseEntity.status(HttpStatus.OK).body("User " + email + " has " + points + " points");
     }
+
+    @PutMapping
+    public ResponseEntity<?> updateCampaignPhrase(@RequestBody CampaignDto campaign) {
+        Campaign updatedCampaign = service.updateCampaignPhrase(campaign);
+        return ResponseEntity.status(HttpStatus.CREATED).body("The campaign was successfully updated. " + updatedCampaign);
+    }
 }
