@@ -13,7 +13,7 @@ import java.time.Instant;
 import java.util.List;
 
 @RestController
-@RequestMapping("/tweet")
+@RequestMapping("/tweets")
 public class TweetController {
 
     private final TweetService service;
@@ -40,9 +40,16 @@ public class TweetController {
         return ResponseEntity.status(HttpStatus.OK).body(tweet);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<?> getAllTweets(@RequestParam Integer page) {
         List<Tweet> tweets = service.getAllTweetsByPage(page);
+        return ResponseEntity.status(HttpStatus.OK).body(tweets);
+    }
+
+
+    @GetMapping
+    public ResponseEntity<?> getTweetsByUserId(@RequestParam String from) {
+        List<Tweet> tweets = service.getTweetsByUserId(from);
         return ResponseEntity.status(HttpStatus.OK).body(tweets);
     }
 
